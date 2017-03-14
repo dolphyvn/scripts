@@ -1,0 +1,2 @@
+Enable this before running perf-tools
+mount -t debugfs debugfs /sys/kernel/debug
