@@ -1,0 +1,7 @@
+To add extra cert san for kubernetes with kubeadm ( v1.13.3 )
+cd /etc/kubernetes/
+cp -R pki pki.bk
+rm -rif pki/apiserver*
+kubeadm init phase certs all --apiserver-advertise-address=0.0.0.0 --apiserver-cert-extra-sans=tes.tsi.ebi.ac.uk,hdruk-master
+docker rm -f `docker ps -q -f 'name=k8s_kube-apiserver*'`
+systemctl restart kubelet
