@@ -1,2 +1,5 @@
+usefull links:
+- http://avid.force.com/pkb/articles/en_US/how_to/Resetting-the-Gluster-Volumes-and-Bricks
+
 When run heketi-cli to setup openshift hekti storage. If you got error claiming about no space
 heketi-cli -s setup-openshift-heketi-storage --image docker.io/heketi/heketi:latest --listfile /tmp/heketi-storage.json --durability none
