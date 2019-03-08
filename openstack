@@ -1,0 +1,4 @@
+Custom script for creating password
+password: mypassword
+chpasswd: { expire: False }
+ssh_pwauth: True
