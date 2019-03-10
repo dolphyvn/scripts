@@ -1,0 +1,35 @@
+# pvcreate /dev/sdd1
+Can't open /dev/sdd1 exclusively. Mounted filesystem?
+# vgcreate vg1 /dev/sdd1
+Can't open /dev/sdd1 exclusively. Mounted filesystem?
+Unable to add physical volume '/dev/sdd1' to volume group 'vg1'.
+Probable Cause of the error
+LVM will only create a pv label on a device if it is not currently in use. There are some of the other various causes for this issue, which include’s:
+
+The device for pvcreate has a mounted filesystem.
+The device for pvcreate has a partition, but you are running pvcreate on the whole disk.
+The device for pvcreate is a dm-multipath and no longer has on-disk partitions but may still have partitions mapped in device-mapper tables.
+The device for pvcreate was previously an LVM PV, and there are still entries in the device-mapper table for this device.
+1. Make sure the device is not mounted on which you trying to create PV.
+
+# df -hP
+Filesystem           Size  Used Avail Use% Mounted on
+/dev/mapper/vg1-lv1   17G  4.3G   13G  26% /data
+You can also run ‘fuser’ command on the partition to see what processes are accessing the device.
+
+# fuser -m -v /dev/sdd1
+2. If it is being used by a mount point which is currently mounted, umount it first.
+
+# umount /data
+3. If you are running pvcreate on the whole disk, remove any partition on that disk, or create a PV on a new partition.
+
+# pvremove /dev/sdd1
+4. Run a scan at PV,LV and VG level.
+
+# pvscan
+# vgscan
+# lvscan
+5. If the device is a dm(device mapper)-multipath device, then check for any stale entries in ‘dmsetup table‘. Remove stale entries if any.
+
+# dmsetup info -C
+# dmsetup remove [dm_map_name]
