@@ -22,7 +22,7 @@ curl -X POST "https://api.datadoghq.com/api/v1/series" \
       "points": [
         [
           "${NOW}",
-          "1234.5"
+          "${upload.speed}"
         ]
       ]
     }
